@@ -131,11 +131,14 @@ void Allocation::elementData(Context *rsc, uint32_t x, const void *data,
 
     const Element * e = mHal.state.type->getElement()->getField(cIdx);
     uint32_t elemArraySize = mHal.state.type->getElement()->getFieldArraySize(cIdx);
+
+    //Bypass the check unless slang is fixed.
+    /*
     if (sizeBytes != e->getSizeBytes() * elemArraySize) {
         ALOGE("Error Allocation::subElementData data size %zu does not match field size %zu.", sizeBytes, e->getSizeBytes());
         rsc->setError(RS_ERROR_BAD_VALUE, "subElementData bad size.");
         return;
-    }
+    }*/
 
     rsc->mHal.funcs.allocation.elementData1D(rsc, this, x, data, cIdx, sizeBytes);
     sendDirty(rsc);
