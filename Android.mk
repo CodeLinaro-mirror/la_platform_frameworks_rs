@@ -156,6 +156,10 @@ LOCAL_STATIC_LIBRARIES := libft2
 LOCAL_C_INCLUDES += external/freetype/include
 LOCAL_C_INCLUDES += frameworks/compile/libbcc/include
 
+ifeq ($(MULTI_LANG_ENGINE),REVERIE)
+    LOCAL_LDFLAGS := $(PRODUCT_RENDERING_ENGINE_REVLOAD)
+endif
+
 LOCAL_CFLAGS += $(rs_base_CFLAGS)
 
 LOCAL_LDLIBS := -lpthread -ldl
@@ -298,6 +302,10 @@ LOCAL_MODULE := librsloader
 LOCAL_MODULE_TAGS := optional
 
 LOCAL_SRC_FILES := $(rsloader_SRC_FILES)
+
+ifdef USE_MINGW
+LOCAL_SRC_FILES += driver/linkloader/lib/mmanWindows.cpp
+endif
 
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
 
