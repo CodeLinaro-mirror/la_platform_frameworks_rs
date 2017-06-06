@@ -491,6 +491,7 @@ bool Context::initContext(Device *dev, const RsSurfaceConfig *sc) {
 
     if (!mIO.init()) {
         ALOGE("Failed initializing IO Fifo");
+        pthread_mutex_unlock(&gInitMutex);
         return false;
     }
     mIO.setTimeoutCallback(printWatchdogInfo, this, 2e9);
@@ -554,7 +555,10 @@ Context::~Context() {
         void *res;
 
         mIO.shutdown();
-        if (!mSynchronous) {
+        if (!mSynchronous && mRunning) {
+            // Only try to join a pthread when:
+            // 1. The Context is asynchronous.
+            // 2. pthread successfully created and running.
             pthread_join(mThreadId, &res);
         }
         rsAssert(mExit);

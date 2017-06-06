@@ -332,7 +332,14 @@ static inline void FepPtrSetup(const MTLaunchStructForEach *mtls, RsExpandKernel
                                uint32_t z = 0, uint32_t lod = 0,
                                RsAllocationCubemapFace face = RS_ALLOCATION_CUBEMAP_FACE_POSITIVE_X,
                                uint32_t a1 = 0, uint32_t a2 = 0, uint32_t a3 = 0, uint32_t a4 = 0) {
+    // When rsForEach passes a null input allocation (as opposed to no input),
+    // fep->inLen can be 1 with mtls->ains[0] being null.
+    // This should only happen on old style kernels.
     for (uint32_t i = 0; i < fep->inLen; i++) {
+        if (mtls->ains[i] == nullptr) {
+            rsAssert(fep->inLen == 1);
+            continue;
+        }
         fep->inPtr[i] = (const uint8_t *)mtls->ains[i]->getPointerUnchecked(x, y, z, lod, face, a1, a2, a3, a4);
     }
     if (mtls->aout[0] != nullptr) {
@@ -483,7 +490,7 @@ static const int kFormatInBytesMax = 16;
 // ": " + 2 digits per byte + 1 separator between bytes + "..." + null
 typedef char FormatBuf[2 + kFormatInBytesMax*2 + (kFormatInBytesMax - 1) + 3 + 1];
 static const char *format_bytes(FormatBuf *outBuf, const uint8_t *inBuf, const int inBytes) {
-  strlcpy(*outBuf, ": ", sizeof(FormatBuf));
+  strlcpy(*outBuf, ": ", sizeof(*outBuf));
   int pos = 2;
   const int lim = std::min(kFormatInBytesMax, inBytes);
   for (int i = 0; i < lim; ++i) {
