@@ -460,7 +460,8 @@ void Context::setCacheDir(const char * cacheDir_arg, uint32_t length) {
 }
 
 Context * Context::createContext(Device *dev, const RsSurfaceConfig *sc,
-                                 RsContextType ct, uint32_t flags) {
+                                 RsContextType ct, uint32_t flags,
+                                 const char* vendorDriverName) {
     Context * rsc = new Context();
 
     if (flags & RS_CONTEXT_LOW_LATENCY) {
@@ -471,6 +472,7 @@ Context * Context::createContext(Device *dev, const RsSurfaceConfig *sc,
     }
     rsc->mContextType = ct;
     rsc->mHal.flags = flags;
+    rsc->mVendorDriverName = vendorDriverName;
 
     if (!rsc->initContext(dev, sc)) {
         delete rsc;
@@ -491,6 +493,7 @@ bool Context::initContext(Device *dev, const RsSurfaceConfig *sc) {
 
     if (!mIO.init()) {
         ALOGE("Failed initializing IO Fifo");
+        pthread_mutex_unlock(&gInitMutex);
         return false;
     }
     mIO.setTimeoutCallback(printWatchdogInfo, this, 2e9);
