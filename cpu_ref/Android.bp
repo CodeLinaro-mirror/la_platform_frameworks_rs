@@ -53,6 +53,7 @@ cc_library_shared {
 
         arm: {
             cflags: [
+                "-DARCH_ARM_HAVE_NEON",
                 "-DARCH_ARM_HAVE_VFP",
                 "-DARCH_ARM_USE_INTRINSICS",
             ],
@@ -66,14 +67,6 @@ cc_library_shared {
                 "rsCpuIntrinsics_neon_Resize.S",
                 "rsCpuIntrinsics_neon_YuvToRGB.S",
             ],
-
-            asflags: ["-mfpu=neon"],
-
-            neon: {
-                cflags: [
-                    "-DARCH_ARM_HAVE_NEON",
-                ],
-            },
         },
 
         x86: {
