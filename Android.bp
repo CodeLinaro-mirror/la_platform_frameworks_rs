@@ -14,7 +14,6 @@ cc_defaults {
         "-Werror",
         "-Wall",
         "-Wextra",
-        "-Wno-cast-function-type-mismatch",
         "-Wno-deprecated-declarations",
         "-Wno-unused-parameter",
         "-Wno-unused-variable",
