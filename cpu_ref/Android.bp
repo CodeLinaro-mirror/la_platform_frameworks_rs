@@ -95,6 +95,7 @@ cc_library_shared {
 
         "libbcinfo",
         "libblas",
+        "libbase",
     ],
     static_libs: ["libbnnmlowp"],
     header_libs: [
