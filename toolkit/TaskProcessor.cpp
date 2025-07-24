@@ -19,6 +19,8 @@
 #include <assert.h>
 #include <sys/prctl.h>
 
+#include <functional>
+
 #include "RenderScriptToolkit.h"
 #include "Utils.h"
 
