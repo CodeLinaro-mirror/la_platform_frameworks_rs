@@ -47,7 +47,7 @@ genrule {
         ":rs_clang_headers",
     ],
     tools: [
-        "llvm-rs-cc",
+        "sdk_llvm-rs-cc",
         "soong_zip",
     ],
     out: [
@@ -55,7 +55,7 @@ genrule {
         "CannyLive.res.zip",
     ],
     cmd: "for f in $(locations src/**/*.rscript); do " +
-        "  $(location llvm-rs-cc) -target-api 22 " +
+        "  $(location sdk_llvm-rs-cc) -target-api 22 " +
         "  -o $(genDir)/res/raw -p $(genDir)/src " +
         "  -I $$(dirname $$(echo $(locations :rs_script_api) | awk '{ print $$1 }')) " +
         "  -I $$(dirname $$(echo $(locations :rs_clang_headers) | awk '{ print $$1 }')) $${f}; " +
