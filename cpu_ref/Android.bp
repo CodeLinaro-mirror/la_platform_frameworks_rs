@@ -4,7 +4,10 @@ package {
 
 cc_library_shared {
     name: "libRSCpuRef",
-    defaults: ["libbcc-targets"],
+    defaults: [
+        "libbcc-targets",
+        "no_bti",
+    ],
     vendor_available: true,
     native_bridge_supported: true,
     double_loadable: true,
